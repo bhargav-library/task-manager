@@ -24,30 +24,22 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-100 p-10">
-      <div className="mx-auto max-w-xl rounded-lg bg-white p-6 shadow">
-        <h1 className="mb-6 text-3xl font-bold">
-          Task Manager
-        </h1>
+    <main className="page">
+      <div className="task-container">
+        <h1>Task Manager</h1>
 
-        <div className="mb-6 flex gap-2">
+        <div className="task-input">
           <input
             type="text"
             placeholder="Enter a task..."
-            className="flex-1 rounded border p-2"
           />
 
-          <button className="rounded bg-blue-500 px-4 py-2 text-white">
-            Add
-          </button>
+          <button>Add</button>
         </div>
 
-        <div>
+        <div className="task-list">
           {tasks.map((task) => (
-            <div
-              key={task.id}
-              className="mb-3 flex items-center gap-2"
-            >
+            <div className="task" key={task.id}>
               <input
                 type="checkbox"
                 checked={task.completed}
