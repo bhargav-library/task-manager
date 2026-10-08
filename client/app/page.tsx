@@ -1,3 +1,5 @@
+"use client";
+
 type Task = {
   id: number;
   title: string;
