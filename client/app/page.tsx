@@ -1,4 +1,7 @@
+
 "use client";
+
+import { useState } from "react";
 
 type Task = {
   id: number;
@@ -7,7 +10,7 @@ type Task = {
 };
 
 export default function Home() {
-  const tasks: Task[] = [
+  const [tasks, setTasks] = useState<Task[]>([
     {
       id: 1,
       title: "Learn TypeScript",
@@ -23,7 +26,26 @@ export default function Home() {
       title: "Learn NestJS",
       completed: false,
     },
-  ];
+  ]);
+
+  const [taskTitle, setTaskTitle] = useState("");
+
+  function handleAddTask() {
+    const trimmedTitle = taskTitle.trim();
+
+    if (trimmedTitle === "") {
+      return;
+    }
+
+    const newTask: Task = {
+      id: Date.now(),
+      title: trimmedTitle,
+      completed: false,
+    };
+
+    setTasks((previousTasks) => [...previousTasks, newTask]);
+    setTaskTitle("");
+  }
 
   return (
     <main className="page">
@@ -34,9 +56,16 @@ export default function Home() {
           <input
             type="text"
             placeholder="Enter a task..."
+            value={taskTitle}
+            onChange={(event) => setTaskTitle(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleAddTask();
+              }
+            }}
           />
 
-          <button>Add</button>
+          <button onClick={handleAddTask}>Add</button>
         </div>
 
         <div className="task-list">
