@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState } from "react";
@@ -47,10 +48,27 @@ export default function Home() {
     setTaskTitle("");
   }
 
+  function handleToggleTask(id: number) {
+    setTasks((previousTasks) =>
+      previousTasks.map((task) =>
+        task.id === id
+          ? { ...task, completed: !task.completed }
+          : task
+      )
+    );
+  }
+
+  function handleDeleteTask(id: number) {
+    setTasks((previousTasks) =>
+      previousTasks.filter((task) => task.id !== id)
+    );
+  }
+
   return (
     <main className="page">
       <div className="task-container">
         <h1>Task Manager</h1>
+        <p className="subtitle">Organize your work, one task at a time.</p>
 
         <div className="task-input">
           <input
@@ -65,22 +83,42 @@ export default function Home() {
             }}
           />
 
-          <button onClick={handleAddTask}>Add</button>
+          <button onClick={handleAddTask}>Add task</button>
         </div>
 
         <div className="task-list">
-          {tasks.map((task) => (
-            <div className="task" key={task.id}>
-              <input
-                type="checkbox"
-                checked={task.completed}
-                readOnly
-              />
+          {tasks.length === 0 ? (
+            <p className="empty-message">No tasks yet. Add one above!</p>
+          ) : (
+            tasks.map((task) => (
+              <div className="task" key={task.id}>
+                <label className="task-details">
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={() => handleToggleTask(task.id)}
+                  />
 
-              <span>{task.title}</span>
-            </div>
-          ))}
+                  <span className={task.completed ? "completed" : ""}>
+                    {task.title}
+                  </span>
+                </label>
+
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteTask(task.id)}
+                  aria-label={`Delete ${task.title}`}
+                >
+                  Delete
+                </button>
+              </div>
+            ))
+          )}
         </div>
+
+        <p className="task-count">
+          {tasks.filter((task) => !task.completed).length} tasks remaining
+        </p>
       </div>
     </main>
   );
